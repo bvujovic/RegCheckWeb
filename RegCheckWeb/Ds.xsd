@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Ds" targetNamespace="http://tempuri.org/Ds.xsd" xmlns:mstns="http://tempuri.org/Ds.xsd" xmlns="http://tempuri.org/Ds.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="Ds" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="Ds" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="Ds">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="WebPages" msprop:Generator_RowEvHandlerName="WebPagesRowChangeEventHandler" msprop:Generator_RowDeletedName="WebPagesRowDeleted" msprop:Generator_RowDeletingName="WebPagesRowDeleting" msprop:Generator_RowEvArgName="WebPagesRowChangeEvent" msprop:Generator_TablePropName="WebPages" msprop:Generator_RowChangedName="WebPagesRowChanged" msprop:Generator_UserTableName="WebPages" msprop:Generator_RowChangingName="WebPagesRowChanging" msprop:Generator_RowClassName="WebPagesRow" msprop:Generator_TableClassName="WebPagesDataTable" msprop:Generator_TableVarName="tableWebPages">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_UserColumnName="Id" msprop:Generator_ColumnVarNameInTable="columnId" type="xs:int" />
+              <xs:element name="URL" msprop:Generator_ColumnPropNameInTable="URLColumn" msprop:Generator_ColumnPropNameInRow="URL" msprop:Generator_UserColumnName="URL" msprop:Generator_ColumnVarNameInTable="columnURL" type="xs:string" />
+              <xs:element name="TargetString" msprop:Generator_ColumnPropNameInTable="TargetStringColumn" msprop:Generator_ColumnPropNameInRow="TargetString" msprop:Generator_UserColumnName="TargetString" msprop:Generator_ColumnVarNameInTable="columnTargetString" type="xs:string" minOccurs="0" />
+              <xs:element name="TargetFound" msprop:Generator_ColumnPropNameInTable="TargetFoundColumn" msprop:Generator_ColumnPropNameInRow="TargetFound" msprop:Generator_UserColumnName="TargetFound" msprop:Generator_ColumnVarNameInTable="columnTargetFound" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Comment" msprop:Generator_ColumnPropNameInTable="CommentColumn" msprop:Generator_ColumnPropNameInRow="Comment" msprop:Generator_UserColumnName="Comment" msprop:Generator_ColumnVarNameInTable="columnComment" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:WebPages" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="Constraint2">
+      <xs:selector xpath=".//mstns:WebPages" />
+      <xs:field xpath="mstns:URL" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>
