@@ -287,6 +287,8 @@ namespace RegCheckWeb {
             
             private global::System.Data.DataColumn columnTargetString;
             
+            private global::System.Data.DataColumn columnIsTargetFound;
+            
             private global::System.Data.DataColumn columnTargetFound;
             
             private global::System.Data.DataColumn columnComment;
@@ -352,6 +354,14 @@ namespace RegCheckWeb {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IsTargetFoundColumn {
+                get {
+                    return this.columnIsTargetFound;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public global::System.Data.DataColumn TargetFoundColumn {
                 get {
                     return this.columnTargetFound;
@@ -403,12 +413,13 @@ namespace RegCheckWeb {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public WebPagesRow AddWebPagesRow(string URL, string TargetString, bool TargetFound, string Comment) {
+            public WebPagesRow AddWebPagesRow(string URL, string TargetString, bool IsTargetFound, string TargetFound, string Comment) {
                 WebPagesRow rowWebPagesRow = ((WebPagesRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         URL,
                         TargetString,
+                        IsTargetFound,
                         TargetFound,
                         Comment};
                 rowWebPagesRow.ItemArray = columnValuesArray;
@@ -443,6 +454,7 @@ namespace RegCheckWeb {
                 this.columnId = base.Columns["Id"];
                 this.columnURL = base.Columns["URL"];
                 this.columnTargetString = base.Columns["TargetString"];
+                this.columnIsTargetFound = base.Columns["IsTargetFound"];
                 this.columnTargetFound = base.Columns["TargetFound"];
                 this.columnComment = base.Columns["Comment"];
             }
@@ -456,7 +468,9 @@ namespace RegCheckWeb {
                 base.Columns.Add(this.columnURL);
                 this.columnTargetString = new global::System.Data.DataColumn("TargetString", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTargetString);
-                this.columnTargetFound = new global::System.Data.DataColumn("TargetFound", typeof(bool), null, global::System.Data.MappingType.Element);
+                this.columnIsTargetFound = new global::System.Data.DataColumn("IsTargetFound", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIsTargetFound);
+                this.columnTargetFound = new global::System.Data.DataColumn("TargetFound", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTargetFound);
                 this.columnComment = new global::System.Data.DataColumn("Comment", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnComment);
@@ -651,10 +665,26 @@ namespace RegCheckWeb {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool TargetFound {
+            public bool IsTargetFound {
                 get {
                     try {
-                        return ((bool)(this[this.tableWebPages.TargetFoundColumn]));
+                        return ((bool)(this[this.tableWebPages.IsTargetFoundColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IsTargetFound\' in table \'WebPages\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWebPages.IsTargetFoundColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TargetFound {
+                get {
+                    try {
+                        return ((string)(this[this.tableWebPages.TargetFoundColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'TargetFound\' in table \'WebPages\' is DBNull.", e);
@@ -691,6 +721,18 @@ namespace RegCheckWeb {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTargetStringNull() {
                 this[this.tableWebPages.TargetStringColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIsTargetFoundNull() {
+                return this.IsNull(this.tableWebPages.IsTargetFoundColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIsTargetFoundNull() {
+                this[this.tableWebPages.IsTargetFoundColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

@@ -1,6 +1,5 @@
 ﻿using RegCheckWeb.Classes;
 using System.Data;
-using System.Diagnostics.Eventing.Reader;
 
 namespace RegCheckWeb
 {
@@ -18,7 +17,10 @@ namespace RegCheckWeb
             try
             {
                 foreach (var page in ds.WebPages)
+                {
+                    page.SetIsTargetFoundNull();
                     page.SetTargetFoundNull();
+                }
                 ds.WriteXml(dataSetFileName);
             }
             catch (Exception ex)
@@ -34,49 +36,53 @@ namespace RegCheckWeb
             try
             {
                 ds.ReadXml(dataSetFileName);
-
-                //var chkElite = new Check("https://www.pansport.rs/proteini/elite-100-whey-protein?sku=1902"
-                //    , "commerce-price-savings-formatter-prices-count-3");
-                //if (await chkElite.FindTarget())
-                //    MessageBox.Show(chkElite.ToString());
-
-                //// https://www.pansport.rs/proteini/100-whey-protein-professional?sku=1129
-                //// https://www.pansport.rs/proteini/100-whey-protein-professional?sku=1129
-                //// https://www.pansport.rs/proteini/100-whey-protein-professional?sku=634
-
-                ////var chkBuild = new Check("https://www.pansport.rs/proteini/ultra-premium-whey-build?sku=1163"
-                ////    , "commerce-price-savings-formatter-prices-count-3");
-                ////MessageBox.Show((await chkBuild.FindTarget()).ToString());
-
-                //var chkPanSearch = new Check("https://www.pansport.rs/search?pretraga=Maxler"
-                //    , "commerce-price-savings-formatter-list odd");
-                //if (await chkPanSearch.FindTarget())
-                //    MessageBox.Show(chkPanSearch.ToString());
-
-                //var chkEdb1 = new Check("https://elektrodistribucija.rs/planirana-iskljucenja-beograd/Dan_1_Iskljucenja.htm"
-                //    , "КРАЉИЦЕ КАТАРИНЕ");
-                //if (await chkEdb1.FindTarget())
-                //    MessageBox.Show(chkEdb1.ToString());
-
-                //var chkEdb11 = new Check("https://elektrodistribucija.rs/planirana-iskljucenja-beograd/Dan_1_Iskljucenja.htm"
-                //    , "СЕЛИНСКА");
-                //if (await chkEdb11.FindTarget())
-                //    MessageBox.Show(chkEdb11.ToString());
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private async void BtnGo_Click(object sender, EventArgs e)
         {
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             for (int i = 0; i < bs.Count; i++)
             {
                 bs.Position = i;
-                var drv = bs.Current as DataRowView;
-                if (drv?.Row is Ds.WebPagesRow row)
+                var page = CurrentWebPage;
+                if (page != null)
                 {
-                    var chk = new Check(row.URL, row.TargetString);
-                    row.TargetFound = await chk.FindTarget();
+                    var chk = new Check(page.URL, page.TargetString);
+                    var found = await chk.FindTarget();
+                    page.IsTargetFound = found.Any();
+                    if (page.TargetString.Contains(Environment.NewLine) && page.IsTargetFound)
+                    {
+                        page.TargetFound = string.Join(", ", found);
+                        dgvcTargetFound.Visible = true;
+                    }
                 }
+            }
+            bs.MoveFirst();
+            dgv.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
+        }
+
+        private void Dgv_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex == -1)
+                return;
+            if (CurrentWebPage != null)
+                Utils.GoToLink(CurrentWebPage.URL);
+        }
+
+        private void TsmiPasteTargetStrings_Click(object sender, EventArgs e)
+        {
+            if (CurrentWebPage != null)
+                CurrentWebPage.TargetString = Clipboard.GetText();
+        }
+
+        public Ds.WebPagesRow? CurrentWebPage
+        {
+            get
+            {
+                var drv = bs.Current as DataRowView;
+                return drv?.Row as Ds.WebPagesRow;
             }
         }
     }

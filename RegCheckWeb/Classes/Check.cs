@@ -1,19 +1,24 @@
 ﻿namespace RegCheckWeb.Classes
 {
-    public class Check(string url, string targetString)
+    public class Check(string url, string targetStrings)
     {
         public string URL { get; set; } = url;
-        public string TargetString { get; set; } = targetString;
+        public string TargetStrings { get; set; } = targetStrings;
 
         public override string ToString()
         {
-            return $"{URL}, target: {TargetString}";
+            return $"{URL}, target: {TargetStrings}";
         }
 
-        public async Task<bool> FindTarget()
+        public async Task<IEnumerable<string>> FindTarget()
         {
             var html = await WebApi.Get(URL);
-            return html.Contains(TargetString);
+            var hits = new List<string>();
+            var targets = TargetStrings.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var target in targets)
+                if (html.Contains(target))
+                    hits.Add(target);
+            return hits;
         }
     }
 }

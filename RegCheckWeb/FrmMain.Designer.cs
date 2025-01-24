@@ -29,18 +29,22 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             ds = new Ds();
             dgv = new DataGridView();
-            targetFoundDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-            uRLDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            targetStringDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            commentDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            ctxTargetStrings = new ContextMenuStrip(components);
+            tsmiPasteTargetStrings = new ToolStripMenuItem();
             bs = new BindingSource(components);
             pnlTop = new Panel();
             btnGo = new Button();
+            targetFoundDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
+            dgvcTargetFound = new DataGridViewTextBoxColumn();
+            uRLDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            targetStringDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            commentDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)ds).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
+            ctxTargetStrings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bs).BeginInit();
             pnlTop.SuspendLayout();
             SuspendLayout();
@@ -54,49 +58,31 @@
             // dgv
             // 
             dgv.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
-            dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
+            dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgv.AutoGenerateColumns = false;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv.Columns.AddRange(new DataGridViewColumn[] { targetFoundDataGridViewCheckBoxColumn, uRLDataGridViewTextBoxColumn, targetStringDataGridViewTextBoxColumn, commentDataGridViewTextBoxColumn });
+            dgv.Columns.AddRange(new DataGridViewColumn[] { targetFoundDataGridViewCheckBoxColumn, dgvcTargetFound, uRLDataGridViewTextBoxColumn, targetStringDataGridViewTextBoxColumn, commentDataGridViewTextBoxColumn });
             dgv.DataSource = bs;
             dgv.Dock = DockStyle.Fill;
             dgv.Location = new Point(0, 44);
             dgv.Name = "dgv";
             dgv.Size = new Size(1179, 279);
             dgv.TabIndex = 0;
+            dgv.CellDoubleClick += Dgv_CellDoubleClick;
             // 
-            // targetFoundDataGridViewCheckBoxColumn
+            // ctxTargetStrings
             // 
-            targetFoundDataGridViewCheckBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            targetFoundDataGridViewCheckBoxColumn.DataPropertyName = "TargetFound";
-            targetFoundDataGridViewCheckBoxColumn.HeaderText = "Found";
-            targetFoundDataGridViewCheckBoxColumn.Name = "targetFoundDataGridViewCheckBoxColumn";
-            targetFoundDataGridViewCheckBoxColumn.ReadOnly = true;
-            targetFoundDataGridViewCheckBoxColumn.SortMode = DataGridViewColumnSortMode.Automatic;
-            targetFoundDataGridViewCheckBoxColumn.ThreeState = true;
-            targetFoundDataGridViewCheckBoxColumn.Width = 69;
+            ctxTargetStrings.Items.AddRange(new ToolStripItem[] { tsmiPasteTargetStrings });
+            ctxTargetStrings.Name = "contextMenuStrip1";
+            ctxTargetStrings.Size = new Size(103, 26);
             // 
-            // uRLDataGridViewTextBoxColumn
+            // tsmiPasteTargetStrings
             // 
-            uRLDataGridViewTextBoxColumn.DataPropertyName = "URL";
-            uRLDataGridViewTextBoxColumn.HeaderText = "URL";
-            uRLDataGridViewTextBoxColumn.Name = "uRLDataGridViewTextBoxColumn";
-            uRLDataGridViewTextBoxColumn.Width = 400;
-            // 
-            // targetStringDataGridViewTextBoxColumn
-            // 
-            targetStringDataGridViewTextBoxColumn.DataPropertyName = "TargetString";
-            targetStringDataGridViewTextBoxColumn.HeaderText = "TargetString";
-            targetStringDataGridViewTextBoxColumn.Name = "targetStringDataGridViewTextBoxColumn";
-            targetStringDataGridViewTextBoxColumn.Width = 200;
-            // 
-            // commentDataGridViewTextBoxColumn
-            // 
-            commentDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            commentDataGridViewTextBoxColumn.DataPropertyName = "Comment";
-            commentDataGridViewTextBoxColumn.HeaderText = "Comment";
-            commentDataGridViewTextBoxColumn.Name = "commentDataGridViewTextBoxColumn";
+            tsmiPasteTargetStrings.Name = "tsmiPasteTargetStrings";
+            tsmiPasteTargetStrings.Size = new Size(102, 22);
+            tsmiPasteTargetStrings.Text = "Paste";
+            tsmiPasteTargetStrings.Click += TsmiPasteTargetStrings_Click;
             // 
             // bs
             // 
@@ -122,6 +108,47 @@
             btnGo.UseVisualStyleBackColor = true;
             btnGo.Click += BtnGo_Click;
             // 
+            // targetFoundDataGridViewCheckBoxColumn
+            // 
+            targetFoundDataGridViewCheckBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            targetFoundDataGridViewCheckBoxColumn.DataPropertyName = "IsTargetFound";
+            targetFoundDataGridViewCheckBoxColumn.HeaderText = "Found";
+            targetFoundDataGridViewCheckBoxColumn.Name = "targetFoundDataGridViewCheckBoxColumn";
+            targetFoundDataGridViewCheckBoxColumn.ReadOnly = true;
+            targetFoundDataGridViewCheckBoxColumn.ThreeState = true;
+            targetFoundDataGridViewCheckBoxColumn.Width = 50;
+            // 
+            // dgvcTargetFound
+            // 
+            dgvcTargetFound.DataPropertyName = "TargetFound";
+            dgvcTargetFound.HeaderText = "Target Found";
+            dgvcTargetFound.Name = "dgvcTargetFound";
+            dgvcTargetFound.ReadOnly = true;
+            dgvcTargetFound.Visible = false;
+            dgvcTargetFound.Width = 200;
+            // 
+            // uRLDataGridViewTextBoxColumn
+            // 
+            uRLDataGridViewTextBoxColumn.DataPropertyName = "URL";
+            uRLDataGridViewTextBoxColumn.HeaderText = "URL";
+            uRLDataGridViewTextBoxColumn.Name = "uRLDataGridViewTextBoxColumn";
+            uRLDataGridViewTextBoxColumn.Width = 400;
+            // 
+            // targetStringDataGridViewTextBoxColumn
+            // 
+            targetStringDataGridViewTextBoxColumn.ContextMenuStrip = ctxTargetStrings;
+            targetStringDataGridViewTextBoxColumn.DataPropertyName = "TargetString";
+            targetStringDataGridViewTextBoxColumn.HeaderText = "Targets";
+            targetStringDataGridViewTextBoxColumn.Name = "targetStringDataGridViewTextBoxColumn";
+            targetStringDataGridViewTextBoxColumn.Width = 200;
+            // 
+            // commentDataGridViewTextBoxColumn
+            // 
+            commentDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            commentDataGridViewTextBoxColumn.DataPropertyName = "Comment";
+            commentDataGridViewTextBoxColumn.HeaderText = "Comment";
+            commentDataGridViewTextBoxColumn.Name = "commentDataGridViewTextBoxColumn";
+            // 
             // FrmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -137,6 +164,7 @@
             Load += FrmMain_Load;
             ((System.ComponentModel.ISupportInitialize)ds).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
+            ctxTargetStrings.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)bs).EndInit();
             pnlTop.ResumeLayout(false);
             ResumeLayout(false);
@@ -147,11 +175,14 @@
         private Ds ds;
         private DataGridView dgv;
         private BindingSource bs;
+        private Panel pnlTop;
+        private Button btnGo;
+        private ContextMenuStrip ctxTargetStrings;
+        private ToolStripMenuItem tsmiPasteTargetStrings;
         private DataGridViewCheckBoxColumn targetFoundDataGridViewCheckBoxColumn;
+        private DataGridViewTextBoxColumn dgvcTargetFound;
         private DataGridViewTextBoxColumn uRLDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn targetStringDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn commentDataGridViewTextBoxColumn;
-        private Panel pnlTop;
-        private Button btnGo;
     }
 }
