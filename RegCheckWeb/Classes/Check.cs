@@ -12,6 +12,8 @@
 
         public async Task<IEnumerable<string>> FindTarget()
         {
+            if (string.IsNullOrEmpty(TargetStrings))
+                return [];
             var html = await WebApi.Get(URL);
             var hits = new List<string>();
             var targets = TargetStrings.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);

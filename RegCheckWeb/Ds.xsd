@@ -19,8 +19,17 @@
               <xs:element name="URL" msprop:Generator_ColumnPropNameInTable="URLColumn" msprop:Generator_ColumnPropNameInRow="URL" msprop:Generator_UserColumnName="URL" msprop:Generator_ColumnVarNameInTable="columnURL" type="xs:string" />
               <xs:element name="TargetString" msprop:Generator_ColumnPropNameInTable="TargetStringColumn" msprop:Generator_ColumnPropNameInRow="TargetString" msprop:Generator_UserColumnName="TargetString" msprop:Generator_ColumnVarNameInTable="columnTargetString" type="xs:string" minOccurs="0" />
               <xs:element name="IsTargetFound" msprop:Generator_ColumnPropNameInTable="IsTargetFoundColumn" msprop:Generator_ColumnPropNameInRow="IsTargetFound" msprop:Generator_UserColumnName="IsTargetFound" msprop:Generator_ColumnVarNameInTable="columnIsTargetFound" type="xs:boolean" minOccurs="0" />
-              <xs:element name="TargetFound" msprop:Generator_ColumnPropNameInRow="TargetFound" msprop:Generator_ColumnPropNameInTable="TargetFoundColumn" msprop:Generator_ColumnVarNameInTable="columnTargetFound" msprop:Generator_UserColumnName="TargetFound" type="xs:string" minOccurs="0" />
+              <xs:element name="TargetFound" msprop:Generator_ColumnPropNameInTable="TargetFoundColumn" msprop:Generator_ColumnPropNameInRow="TargetFound" msprop:Generator_UserColumnName="TargetFound" msprop:Generator_ColumnVarNameInTable="columnTargetFound" type="xs:string" minOccurs="0" />
               <xs:element name="Comment" msprop:Generator_ColumnPropNameInTable="CommentColumn" msprop:Generator_ColumnPropNameInRow="Comment" msprop:Generator_UserColumnName="Comment" msprop:Generator_ColumnVarNameInTable="columnComment" type="xs:string" minOccurs="0" />
+              <xs:element name="Enabled" msprop:Generator_UserColumnName="Enabled" msprop:Generator_ColumnPropNameInTable="EnabledColumn" msprop:Generator_ColumnPropNameInRow="Enabled" msprop:Generator_ColumnVarNameInTable="columnEnabled" type="xs:boolean" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Settings" msprop:Generator_RowClassName="SettingsRow" msprop:Generator_RowEvHandlerName="SettingsRowChangeEventHandler" msprop:Generator_RowDeletedName="SettingsRowDeleted" msprop:Generator_RowDeletingName="SettingsRowDeleting" msprop:Generator_RowEvArgName="SettingsRowChangeEvent" msprop:Generator_TablePropName="Settings" msprop:Generator_RowChangedName="SettingsRowChanged" msprop:Generator_UserTableName="Settings" msprop:Generator_RowChangingName="SettingsRowChanging" msprop:Generator_TableClassName="SettingsDataTable" msprop:Generator_TableVarName="tableSettings">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_UserColumnName="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnVarNameInTable="columnName" type="xs:string" />
+              <xs:element name="Value" msprop:Generator_UserColumnName="Value" msprop:Generator_ColumnPropNameInTable="ValueColumn" msprop:Generator_ColumnPropNameInRow="Value" msprop:Generator_ColumnVarNameInTable="columnValue" type="xs:string" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -33,6 +42,10 @@
     <xs:unique name="Constraint2">
       <xs:selector xpath=".//mstns:WebPages" />
       <xs:field xpath="mstns:URL" />
+    </xs:unique>
+    <xs:unique name="Settings_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Settings" />
+      <xs:field xpath="mstns:Name" />
     </xs:unique>
   </xs:element>
 </xs:schema>

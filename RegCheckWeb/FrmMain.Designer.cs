@@ -29,19 +29,21 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             ds = new Ds();
             dgv = new DataGridView();
-            ctxTargetStrings = new ContextMenuStrip(components);
-            tsmiPasteTargetStrings = new ToolStripMenuItem();
-            bs = new BindingSource(components);
-            pnlTop = new Panel();
-            btnGo = new Button();
             targetFoundDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             dgvcTargetFound = new DataGridViewTextBoxColumn();
-            uRLDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            dgvcURL = new DataGridViewTextBoxColumn();
             targetStringDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            ctxTargetStrings = new ContextMenuStrip(components);
+            tsmiPasteTargetStrings = new ToolStripMenuItem();
             commentDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            dgvcEnabled = new DataGridViewCheckBoxColumn();
+            bs = new BindingSource(components);
+            pnlTop = new Panel();
+            btnEnableAll = new Button();
+            btnGo = new Button();
             ((System.ComponentModel.ISupportInitialize)ds).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
             ctxTargetStrings.SuspendLayout();
@@ -58,11 +60,11 @@
             // dgv
             // 
             dgv.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
-            dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
+            dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             dgv.AutoGenerateColumns = false;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv.Columns.AddRange(new DataGridViewColumn[] { targetFoundDataGridViewCheckBoxColumn, dgvcTargetFound, uRLDataGridViewTextBoxColumn, targetStringDataGridViewTextBoxColumn, commentDataGridViewTextBoxColumn });
+            dgv.Columns.AddRange(new DataGridViewColumn[] { targetFoundDataGridViewCheckBoxColumn, dgvcTargetFound, dgvcURL, targetStringDataGridViewTextBoxColumn, commentDataGridViewTextBoxColumn, dgvcEnabled });
             dgv.DataSource = bs;
             dgv.Dock = DockStyle.Fill;
             dgv.Location = new Point(0, 44);
@@ -70,43 +72,6 @@
             dgv.Size = new Size(1179, 279);
             dgv.TabIndex = 0;
             dgv.CellDoubleClick += Dgv_CellDoubleClick;
-            // 
-            // ctxTargetStrings
-            // 
-            ctxTargetStrings.Items.AddRange(new ToolStripItem[] { tsmiPasteTargetStrings });
-            ctxTargetStrings.Name = "contextMenuStrip1";
-            ctxTargetStrings.Size = new Size(103, 26);
-            // 
-            // tsmiPasteTargetStrings
-            // 
-            tsmiPasteTargetStrings.Name = "tsmiPasteTargetStrings";
-            tsmiPasteTargetStrings.Size = new Size(102, 22);
-            tsmiPasteTargetStrings.Text = "Paste";
-            tsmiPasteTargetStrings.Click += TsmiPasteTargetStrings_Click;
-            // 
-            // bs
-            // 
-            bs.DataMember = "WebPages";
-            bs.DataSource = ds;
-            // 
-            // pnlTop
-            // 
-            pnlTop.Controls.Add(btnGo);
-            pnlTop.Dock = DockStyle.Top;
-            pnlTop.Location = new Point(0, 0);
-            pnlTop.Name = "pnlTop";
-            pnlTop.Size = new Size(1179, 44);
-            pnlTop.TabIndex = 1;
-            // 
-            // btnGo
-            // 
-            btnGo.Location = new Point(11, 8);
-            btnGo.Name = "btnGo";
-            btnGo.Size = new Size(75, 27);
-            btnGo.TabIndex = 0;
-            btnGo.Text = "&Go";
-            btnGo.UseVisualStyleBackColor = true;
-            btnGo.Click += BtnGo_Click;
             // 
             // targetFoundDataGridViewCheckBoxColumn
             // 
@@ -127,12 +92,12 @@
             dgvcTargetFound.Visible = false;
             dgvcTargetFound.Width = 200;
             // 
-            // uRLDataGridViewTextBoxColumn
+            // dgvcURL
             // 
-            uRLDataGridViewTextBoxColumn.DataPropertyName = "URL";
-            uRLDataGridViewTextBoxColumn.HeaderText = "URL";
-            uRLDataGridViewTextBoxColumn.Name = "uRLDataGridViewTextBoxColumn";
-            uRLDataGridViewTextBoxColumn.Width = 400;
+            dgvcURL.DataPropertyName = "URL";
+            dgvcURL.HeaderText = "URL";
+            dgvcURL.Name = "dgvcURL";
+            dgvcURL.Width = 400;
             // 
             // targetStringDataGridViewTextBoxColumn
             // 
@@ -142,12 +107,70 @@
             targetStringDataGridViewTextBoxColumn.Name = "targetStringDataGridViewTextBoxColumn";
             targetStringDataGridViewTextBoxColumn.Width = 200;
             // 
+            // ctxTargetStrings
+            // 
+            ctxTargetStrings.Items.AddRange(new ToolStripItem[] { tsmiPasteTargetStrings });
+            ctxTargetStrings.Name = "contextMenuStrip1";
+            ctxTargetStrings.Size = new Size(103, 26);
+            // 
+            // tsmiPasteTargetStrings
+            // 
+            tsmiPasteTargetStrings.Name = "tsmiPasteTargetStrings";
+            tsmiPasteTargetStrings.Size = new Size(102, 22);
+            tsmiPasteTargetStrings.Text = "Paste";
+            tsmiPasteTargetStrings.Click += TsmiPasteTargetStrings_Click;
+            // 
             // commentDataGridViewTextBoxColumn
             // 
             commentDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             commentDataGridViewTextBoxColumn.DataPropertyName = "Comment";
             commentDataGridViewTextBoxColumn.HeaderText = "Comment";
             commentDataGridViewTextBoxColumn.Name = "commentDataGridViewTextBoxColumn";
+            // 
+            // dgvcEnabled
+            // 
+            dgvcEnabled.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dgvcEnabled.DataPropertyName = "Enabled";
+            dgvcEnabled.HeaderText = "Enabled";
+            dgvcEnabled.Name = "dgvcEnabled";
+            dgvcEnabled.Resizable = DataGridViewTriState.False;
+            dgvcEnabled.Width = 61;
+            // 
+            // bs
+            // 
+            bs.DataMember = "WebPages";
+            bs.DataSource = ds;
+            // 
+            // pnlTop
+            // 
+            pnlTop.Controls.Add(btnEnableAll);
+            pnlTop.Controls.Add(btnGo);
+            pnlTop.Dock = DockStyle.Top;
+            pnlTop.Location = new Point(0, 0);
+            pnlTop.Name = "pnlTop";
+            pnlTop.Size = new Size(1179, 44);
+            pnlTop.TabIndex = 1;
+            // 
+            // btnEnableAll
+            // 
+            btnEnableAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnEnableAll.Location = new Point(1083, 8);
+            btnEnableAll.Name = "btnEnableAll";
+            btnEnableAll.Size = new Size(84, 27);
+            btnEnableAll.TabIndex = 1;
+            btnEnableAll.Text = "Enable All";
+            btnEnableAll.UseVisualStyleBackColor = true;
+            btnEnableAll.Click += BtnEnableAll_Click;
+            // 
+            // btnGo
+            // 
+            btnGo.Location = new Point(11, 8);
+            btnGo.Name = "btnGo";
+            btnGo.Size = new Size(75, 27);
+            btnGo.TabIndex = 0;
+            btnGo.Text = "&Go";
+            btnGo.UseVisualStyleBackColor = true;
+            btnGo.Click += BtnGo_Click;
             // 
             // FrmMain
             // 
@@ -179,10 +202,12 @@
         private Button btnGo;
         private ContextMenuStrip ctxTargetStrings;
         private ToolStripMenuItem tsmiPasteTargetStrings;
+        private Button btnEnableAll;
         private DataGridViewCheckBoxColumn targetFoundDataGridViewCheckBoxColumn;
         private DataGridViewTextBoxColumn dgvcTargetFound;
-        private DataGridViewTextBoxColumn uRLDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn dgvcURL;
         private DataGridViewTextBoxColumn targetStringDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn commentDataGridViewTextBoxColumn;
+        private DataGridViewCheckBoxColumn dgvcEnabled;
     }
 }
