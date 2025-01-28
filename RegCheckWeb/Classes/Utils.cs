@@ -19,6 +19,24 @@ namespace RegCheckWeb.Classes
             catch (Exception ex) { MessageBox.Show(ex.Message, "Go to Link"); }
         }
 
+        public static void OpenFile(string url)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo()
+                {
+                    UseShellExecute = true,
+                    FileName = url,
+                });
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message, "Open File"); }
+        }
+
+        public static bool IsWebLink(string s)
+        {
+            return !string.IsNullOrEmpty(s) && (s.StartsWith("www") || s.StartsWith("http"));
+        }
+
         public static Ds Ds { get; set; }
 
         public static void SaveSetting(string name, string value)
@@ -41,5 +59,15 @@ namespace RegCheckWeb.Classes
                 return int.Parse(s.Value);
             return defValue;
         }
+
+        public static DateTime ReadDateTimeSetting(string name, DateTime defValue)
+        {
+            var s = Ds.Settings.FindByName(name);
+            if (s != null)
+                return DateTime.Parse(s.Value);
+            return defValue;
+        }
+
+        public const string DatumVremeFormatFileMin = "yyyy.MM.dd_HH.mm";
     }
 }

@@ -330,6 +330,10 @@ namespace RegCheckWeb {
             
             private global::System.Data.DataColumn columnEnabled;
             
+            private global::System.Data.DataColumn columnOrder;
+            
+            private global::System.Data.DataColumn columnImageStr;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public WebPagesDataTable() {
@@ -423,6 +427,22 @@ namespace RegCheckWeb {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OrderColumn {
+                get {
+                    return this.columnOrder;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ImageStrColumn {
+                get {
+                    return this.columnImageStr;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -458,7 +478,7 @@ namespace RegCheckWeb {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public WebPagesRow AddWebPagesRow(string URL, string TargetString, bool IsTargetFound, string TargetFound, string Comment, bool Enabled) {
+            public WebPagesRow AddWebPagesRow(string URL, string TargetString, bool IsTargetFound, string TargetFound, string Comment, bool Enabled, int Order, string ImageStr) {
                 WebPagesRow rowWebPagesRow = ((WebPagesRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -467,7 +487,9 @@ namespace RegCheckWeb {
                         IsTargetFound,
                         TargetFound,
                         Comment,
-                        Enabled};
+                        Enabled,
+                        Order,
+                        ImageStr};
                 rowWebPagesRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowWebPagesRow);
                 return rowWebPagesRow;
@@ -504,6 +526,8 @@ namespace RegCheckWeb {
                 this.columnTargetFound = base.Columns["TargetFound"];
                 this.columnComment = base.Columns["Comment"];
                 this.columnEnabled = base.Columns["Enabled"];
+                this.columnOrder = base.Columns["Order"];
+                this.columnImageStr = base.Columns["ImageStr"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -523,6 +547,10 @@ namespace RegCheckWeb {
                 base.Columns.Add(this.columnComment);
                 this.columnEnabled = new global::System.Data.DataColumn("Enabled", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEnabled);
+                this.columnOrder = new global::System.Data.DataColumn("Order", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOrder);
+                this.columnImageStr = new global::System.Data.DataColumn("ImageStr", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnImageStr);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnId}, true));
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint2", new global::System.Data.DataColumn[] {
@@ -535,6 +563,7 @@ namespace RegCheckWeb {
                 this.columnURL.AllowDBNull = false;
                 this.columnURL.Unique = true;
                 this.columnEnabled.AllowDBNull = false;
+                this.columnEnabled.DefaultValue = ((bool)(true));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1051,6 +1080,38 @@ namespace RegCheckWeb {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int Order {
+                get {
+                    try {
+                        return ((int)(this[this.tableWebPages.OrderColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Order\' in table \'WebPages\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWebPages.OrderColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ImageStr {
+                get {
+                    try {
+                        return ((string)(this[this.tableWebPages.ImageStrColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ImageStr\' in table \'WebPages\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWebPages.ImageStrColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTargetStringNull() {
                 return this.IsNull(this.tableWebPages.TargetStringColumn);
             }
@@ -1095,6 +1156,30 @@ namespace RegCheckWeb {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetCommentNull() {
                 this[this.tableWebPages.CommentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOrderNull() {
+                return this.IsNull(this.tableWebPages.OrderColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOrderNull() {
+                this[this.tableWebPages.OrderColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsImageStrNull() {
+                return this.IsNull(this.tableWebPages.ImageStrColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetImageStrNull() {
+                this[this.tableWebPages.ImageStrColumn] = global::System.Convert.DBNull;
             }
         }
         

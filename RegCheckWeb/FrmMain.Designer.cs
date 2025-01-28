@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             ds = new Ds();
             dgv = new DataGridView();
             targetFoundDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
@@ -38,10 +38,12 @@
             targetStringDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             ctxTargetStrings = new ContextMenuStrip(components);
             tsmiPasteTargetStrings = new ToolStripMenuItem();
-            commentDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            dgvcComment = new DataGridViewTextBoxColumn();
             dgvcEnabled = new DataGridViewCheckBoxColumn();
+            dgvcImage = new DataGridViewButtonColumn();
             bs = new BindingSource(components);
             pnlTop = new Panel();
+            btnPageOrderUp = new Button();
             btnEnableAll = new Button();
             btnGo = new Button();
             ((System.ComponentModel.ISupportInitialize)ds).BeginInit();
@@ -60,17 +62,18 @@
             // dgv
             // 
             dgv.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
-            dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
+            dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgv.AutoGenerateColumns = false;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv.Columns.AddRange(new DataGridViewColumn[] { targetFoundDataGridViewCheckBoxColumn, dgvcTargetFound, dgvcURL, targetStringDataGridViewTextBoxColumn, commentDataGridViewTextBoxColumn, dgvcEnabled });
+            dgv.Columns.AddRange(new DataGridViewColumn[] { targetFoundDataGridViewCheckBoxColumn, dgvcTargetFound, dgvcURL, targetStringDataGridViewTextBoxColumn, dgvcComment, dgvcEnabled, dgvcImage });
             dgv.DataSource = bs;
             dgv.Dock = DockStyle.Fill;
             dgv.Location = new Point(0, 44);
             dgv.Name = "dgv";
             dgv.Size = new Size(1179, 279);
             dgv.TabIndex = 0;
+            dgv.CellClick += Dgv_CellClick;
             dgv.CellDoubleClick += Dgv_CellDoubleClick;
             // 
             // targetFoundDataGridViewCheckBoxColumn
@@ -120,12 +123,12 @@
             tsmiPasteTargetStrings.Text = "Paste";
             tsmiPasteTargetStrings.Click += TsmiPasteTargetStrings_Click;
             // 
-            // commentDataGridViewTextBoxColumn
+            // dgvcComment
             // 
-            commentDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            commentDataGridViewTextBoxColumn.DataPropertyName = "Comment";
-            commentDataGridViewTextBoxColumn.HeaderText = "Comment";
-            commentDataGridViewTextBoxColumn.Name = "commentDataGridViewTextBoxColumn";
+            dgvcComment.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgvcComment.DataPropertyName = "Comment";
+            dgvcComment.HeaderText = "Comment";
+            dgvcComment.Name = "dgvcComment";
             // 
             // dgvcEnabled
             // 
@@ -136,13 +139,24 @@
             dgvcEnabled.Resizable = DataGridViewTriState.False;
             dgvcEnabled.Width = 61;
             // 
+            // dgvcImage
+            // 
+            dgvcImage.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dgvcImage.DataPropertyName = "ImageStr";
+            dgvcImage.HeaderText = "Image";
+            dgvcImage.Name = "dgvcImage";
+            dgvcImage.ReadOnly = true;
+            dgvcImage.Width = 50;
+            // 
             // bs
             // 
             bs.DataMember = "WebPages";
             bs.DataSource = ds;
+            bs.Sort = "Order, Id";
             // 
             // pnlTop
             // 
+            pnlTop.Controls.Add(btnPageOrderUp);
             pnlTop.Controls.Add(btnEnableAll);
             pnlTop.Controls.Add(btnGo);
             pnlTop.Dock = DockStyle.Top;
@@ -150,6 +164,16 @@
             pnlTop.Name = "pnlTop";
             pnlTop.Size = new Size(1179, 44);
             pnlTop.TabIndex = 1;
+            // 
+            // btnPageOrderUp
+            // 
+            btnPageOrderUp.Location = new Point(153, 8);
+            btnPageOrderUp.Name = "btnPageOrderUp";
+            btnPageOrderUp.Size = new Size(75, 27);
+            btnPageOrderUp.TabIndex = 2;
+            btnPageOrderUp.Text = "Move Up";
+            btnPageOrderUp.UseVisualStyleBackColor = true;
+            btnPageOrderUp.Click += BtnPageOrderUp_Click;
             // 
             // btnEnableAll
             // 
@@ -203,11 +227,13 @@
         private ContextMenuStrip ctxTargetStrings;
         private ToolStripMenuItem tsmiPasteTargetStrings;
         private Button btnEnableAll;
+        private Button btnPageOrderUp;
         private DataGridViewCheckBoxColumn targetFoundDataGridViewCheckBoxColumn;
         private DataGridViewTextBoxColumn dgvcTargetFound;
         private DataGridViewTextBoxColumn dgvcURL;
         private DataGridViewTextBoxColumn targetStringDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn commentDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn dgvcComment;
         private DataGridViewCheckBoxColumn dgvcEnabled;
+        private DataGridViewButtonColumn dgvcImage;
     }
 }
