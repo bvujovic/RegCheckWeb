@@ -32,19 +32,18 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             ds = new Ds();
             dgv = new DataGridView();
-            targetFoundDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             dgvcTargetFound = new DataGridViewTextBoxColumn();
             dgvcURL = new DataGridViewTextBoxColumn();
             targetStringDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             ctxTargetStrings = new ContextMenuStrip(components);
             tsmiPasteTargetStrings = new ToolStripMenuItem();
             dgvcComment = new DataGridViewTextBoxColumn();
-            dgvcEnabled = new DataGridViewCheckBoxColumn();
+            targetFoundDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             dgvcImage = new DataGridViewButtonColumn();
             bs = new BindingSource(components);
             pnlTop = new Panel();
+            btnAppFolderBrowse = new Button();
             btnPageOrderUp = new Button();
-            btnEnableAll = new Button();
             btnGo = new Button();
             ((System.ComponentModel.ISupportInitialize)ds).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
@@ -66,7 +65,7 @@
             dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgv.AutoGenerateColumns = false;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv.Columns.AddRange(new DataGridViewColumn[] { targetFoundDataGridViewCheckBoxColumn, dgvcTargetFound, dgvcURL, targetStringDataGridViewTextBoxColumn, dgvcComment, dgvcEnabled, dgvcImage });
+            dgv.Columns.AddRange(new DataGridViewColumn[] { dgvcTargetFound, dgvcURL, targetStringDataGridViewTextBoxColumn, dgvcComment, targetFoundDataGridViewCheckBoxColumn, dgvcImage });
             dgv.DataSource = bs;
             dgv.Dock = DockStyle.Fill;
             dgv.Location = new Point(0, 44);
@@ -75,16 +74,6 @@
             dgv.TabIndex = 0;
             dgv.CellClick += Dgv_CellClick;
             dgv.CellDoubleClick += Dgv_CellDoubleClick;
-            // 
-            // targetFoundDataGridViewCheckBoxColumn
-            // 
-            targetFoundDataGridViewCheckBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            targetFoundDataGridViewCheckBoxColumn.DataPropertyName = "IsTargetFound";
-            targetFoundDataGridViewCheckBoxColumn.HeaderText = "Found";
-            targetFoundDataGridViewCheckBoxColumn.Name = "targetFoundDataGridViewCheckBoxColumn";
-            targetFoundDataGridViewCheckBoxColumn.ReadOnly = true;
-            targetFoundDataGridViewCheckBoxColumn.ThreeState = true;
-            targetFoundDataGridViewCheckBoxColumn.Width = 50;
             // 
             // dgvcTargetFound
             // 
@@ -130,14 +119,16 @@
             dgvcComment.HeaderText = "Comment";
             dgvcComment.Name = "dgvcComment";
             // 
-            // dgvcEnabled
+            // targetFoundDataGridViewCheckBoxColumn
             // 
-            dgvcEnabled.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dgvcEnabled.DataPropertyName = "Enabled";
-            dgvcEnabled.HeaderText = "Enabled";
-            dgvcEnabled.Name = "dgvcEnabled";
-            dgvcEnabled.Resizable = DataGridViewTriState.False;
-            dgvcEnabled.Width = 61;
+            targetFoundDataGridViewCheckBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            targetFoundDataGridViewCheckBoxColumn.DataPropertyName = "IsTargetFound";
+            targetFoundDataGridViewCheckBoxColumn.HeaderText = "Found";
+            targetFoundDataGridViewCheckBoxColumn.Name = "targetFoundDataGridViewCheckBoxColumn";
+            targetFoundDataGridViewCheckBoxColumn.ReadOnly = true;
+            targetFoundDataGridViewCheckBoxColumn.SortMode = DataGridViewColumnSortMode.Automatic;
+            targetFoundDataGridViewCheckBoxColumn.ThreeState = true;
+            targetFoundDataGridViewCheckBoxColumn.Width = 69;
             // 
             // dgvcImage
             // 
@@ -156,8 +147,8 @@
             // 
             // pnlTop
             // 
+            pnlTop.Controls.Add(btnAppFolderBrowse);
             pnlTop.Controls.Add(btnPageOrderUp);
-            pnlTop.Controls.Add(btnEnableAll);
             pnlTop.Controls.Add(btnGo);
             pnlTop.Dock = DockStyle.Top;
             pnlTop.Location = new Point(0, 0);
@@ -165,35 +156,42 @@
             pnlTop.Size = new Size(1179, 44);
             pnlTop.TabIndex = 1;
             // 
+            // btnAppFolderBrowse
+            // 
+            btnAppFolderBrowse.FlatStyle = FlatStyle.Popup;
+            btnAppFolderBrowse.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAppFolderBrowse.Location = new Point(297, 8);
+            btnAppFolderBrowse.Name = "btnAppFolderBrowse";
+            btnAppFolderBrowse.Size = new Size(75, 28);
+            btnAppFolderBrowse.TabIndex = 3;
+            btnAppFolderBrowse.Text = "&Folder...";
+            btnAppFolderBrowse.UseVisualStyleBackColor = true;
+            btnAppFolderBrowse.Click += BtnAppFolderBrowse_Click;
+            // 
             // btnPageOrderUp
             // 
-            btnPageOrderUp.Location = new Point(153, 8);
+            btnPageOrderUp.FlatStyle = FlatStyle.Popup;
+            btnPageOrderUp.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnPageOrderUp.Location = new Point(154, 8);
+            btnPageOrderUp.Margin = new Padding(0);
             btnPageOrderUp.Name = "btnPageOrderUp";
-            btnPageOrderUp.Size = new Size(75, 27);
+            btnPageOrderUp.Size = new Size(85, 28);
             btnPageOrderUp.TabIndex = 2;
-            btnPageOrderUp.Text = "Move Up";
+            btnPageOrderUp.Text = "Move 🔼";
             btnPageOrderUp.UseVisualStyleBackColor = true;
             btnPageOrderUp.Click += BtnPageOrderUp_Click;
             // 
-            // btnEnableAll
-            // 
-            btnEnableAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnEnableAll.Location = new Point(1083, 8);
-            btnEnableAll.Name = "btnEnableAll";
-            btnEnableAll.Size = new Size(84, 27);
-            btnEnableAll.TabIndex = 1;
-            btnEnableAll.Text = "Enable All";
-            btnEnableAll.UseVisualStyleBackColor = true;
-            btnEnableAll.Click += BtnEnableAll_Click;
-            // 
             // btnGo
             // 
+            btnGo.BackColor = Color.LightGreen;
+            btnGo.FlatStyle = FlatStyle.Popup;
+            btnGo.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnGo.Location = new Point(11, 8);
             btnGo.Name = "btnGo";
-            btnGo.Size = new Size(75, 27);
+            btnGo.Size = new Size(75, 28);
             btnGo.TabIndex = 0;
             btnGo.Text = "&Go";
-            btnGo.UseVisualStyleBackColor = true;
+            btnGo.UseVisualStyleBackColor = false;
             btnGo.Click += BtnGo_Click;
             // 
             // FrmMain
@@ -226,14 +224,13 @@
         private Button btnGo;
         private ContextMenuStrip ctxTargetStrings;
         private ToolStripMenuItem tsmiPasteTargetStrings;
-        private Button btnEnableAll;
         private Button btnPageOrderUp;
-        private DataGridViewCheckBoxColumn targetFoundDataGridViewCheckBoxColumn;
+        private Button btnAppFolderBrowse;
         private DataGridViewTextBoxColumn dgvcTargetFound;
         private DataGridViewTextBoxColumn dgvcURL;
         private DataGridViewTextBoxColumn targetStringDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn dgvcComment;
-        private DataGridViewCheckBoxColumn dgvcEnabled;
+        private DataGridViewCheckBoxColumn targetFoundDataGridViewCheckBoxColumn;
         private DataGridViewButtonColumn dgvcImage;
     }
 }

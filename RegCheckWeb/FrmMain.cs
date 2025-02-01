@@ -1,5 +1,4 @@
 ﻿using RegCheckWeb.Classes;
-using System;
 using System.Data;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -31,11 +30,11 @@ namespace RegCheckWeb
                 //        page.Order = -page.Id;
                 //    Debug.WriteLine(page.Order);
                 //}
-
-                Width = Utils.ReadIntSetting(nameof(Width), Width);
-                Height = Utils.ReadIntSetting(nameof(Height), Height);
-                Left = Utils.ReadIntSetting(nameof(Left), Left);
-                Top = Utils.ReadIntSetting(nameof(Top), Top);
+                var screen = Screen.PrimaryScreen!.WorkingArea;
+                Width = Utils.ReadIntSetting(nameof(Width), Width, it => it > 100 && it <= screen.Width);
+                Height = Utils.ReadIntSetting(nameof(Height), Height, it => it > 100 && it <= screen.Height);
+                Left = Utils.ReadIntSetting(nameof(Left), Left, it => it >= 0 && it < screen.Width);
+                Top = Utils.ReadIntSetting(nameof(Top), Top, it => it >= 0 && it <= screen.Top);
 
                 var lastBackup = Utils.ReadDateTimeSetting("lastBackup", DateTime.MinValue);
                 if ((DateTime.Now - lastBackup).TotalDays >= 7)
@@ -62,10 +61,13 @@ namespace RegCheckWeb
                     page.SetIsTargetFoundNull();
                     page.SetTargetFoundNull();
                 }
-                Utils.SaveSetting(nameof(Width), Width.ToString());
-                Utils.SaveSetting(nameof(Height), Height.ToString());
-                Utils.SaveSetting(nameof(Left), Left.ToString());
-                Utils.SaveSetting(nameof(Top), Top.ToString());
+                if (WindowState == FormWindowState.Normal)
+                {
+                    Utils.SaveSetting(nameof(Width), Width.ToString());
+                    Utils.SaveSetting(nameof(Height), Height.ToString());
+                    Utils.SaveSetting(nameof(Left), Left.ToString());
+                    Utils.SaveSetting(nameof(Top), Top.ToString());
+                }
 
                 ds.WriteXml(dataSetFileName);
             }
@@ -86,7 +88,7 @@ namespace RegCheckWeb
 
             if (dgv.SelectedRows.Count == 0)
                 dgv.SelectAll();
-            var selected = dgv.SelectedRows;
+            var selected = dgv.SelectedRows.Cast<DataGridViewRow>().Reverse();
 
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             foreach (DataGridViewRow row in selected)
@@ -95,7 +97,7 @@ namespace RegCheckWeb
                     continue;
                 bs.Position = row.Index;
                 var page = CurrentWebPage;
-                if (page != null && !page.IsTargetStringNull() && page.Enabled)
+                if (page != null && !page.IsTargetStringNull())
                 {
                     var chk = new Check(page.URL, page.TargetString);
                     var found = await chk.FindTarget();
@@ -107,7 +109,7 @@ namespace RegCheckWeb
                     }
                 }
             }
-            bs.Position = selected[0].Index;
+            bs.Position = selected.First().Index;
             dgv.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
         }
 
@@ -194,15 +196,6 @@ namespace RegCheckWeb
                 CurrentWebPage.TargetString = Clipboard.GetText();
         }
 
-        private bool enableAll = true;
-        private void BtnEnableAll_Click(object sender, EventArgs e)
-        {
-            foreach (var page in ds.WebPages)
-                page.Enabled = enableAll;
-            enableAll = !enableAll;
-            btnEnableAll.Text = enableAll ? "Enable All" : "Disable All";
-        }
-
         private void BtnPageOrderUp_Click(object sender, EventArgs e)
         {
             if (CurrentWebPage == null)
@@ -213,6 +206,11 @@ namespace RegCheckWeb
                 return;
             var swapPage = ds.WebPages.First(it => it.Order == ords.Max());
             (swapPage.Order, CurrentWebPage.Order) = (CurrentWebPage.Order, swapPage.Order);
+        }
+
+        private void BtnAppFolderBrowse_Click(object sender, EventArgs e)
+        {
+            Utils.OpenFile(Directory.GetCurrentDirectory());
         }
 
         public WebPagesRow? CurrentWebPage

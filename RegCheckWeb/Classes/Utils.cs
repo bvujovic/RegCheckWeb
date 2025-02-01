@@ -19,14 +19,14 @@ namespace RegCheckWeb.Classes
             catch (Exception ex) { MessageBox.Show(ex.Message, "Go to Link"); }
         }
 
-        public static void OpenFile(string url)
+        public static void OpenFile(string filePath)
         {
             try
             {
                 Process.Start(new ProcessStartInfo()
                 {
                     UseShellExecute = true,
-                    FileName = url,
+                    FileName = filePath,
                 });
             }
             catch (Exception ex) { MessageBox.Show(ex.Message, "Open File"); }
@@ -52,11 +52,14 @@ namespace RegCheckWeb.Classes
                 Ds.Settings.AddSettingsRow(loc);
         }
 
-        public static int ReadIntSetting(string name, int defValue)
+        public static int ReadIntSetting(string name, int defValue, Func<int, bool> checkMethod)
         {
             var s = Ds.Settings.FindByName(name);
             if (s != null)
-                return int.Parse(s.Value);
+            {
+                var val = int.Parse(s.Value);
+                return checkMethod(val) ? val : defValue;
+            }
             return defValue;
         }
 

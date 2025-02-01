@@ -17,8 +17,8 @@
                 slika = value;
                 pic.Image = new Bitmap(slika);
 
-                this.Width = pic.Image.Width + this.Width - pic.Width;
-                this.Height = pic.Image.Height + this.Height - pic.Height;
+                //this.Width = pic.Image.Width + this.Width - pic.Width;
+                //this.Height = pic.Image.Height + this.Height - pic.Height;
             }
         }
     }

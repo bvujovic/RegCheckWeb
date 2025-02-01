@@ -38,6 +38,7 @@
             pic.Location = new Point(0, 0);
             pic.Name = "pic";
             pic.Size = new Size(305, 273);
+            pic.SizeMode = PictureBoxSizeMode.Zoom;
             pic.TabIndex = 0;
             pic.TabStop = false;
             // 
