@@ -45,6 +45,7 @@
             btnAppFolderBrowse = new Button();
             btnPageOrderUp = new Button();
             btnGo = new Button();
+            timImage = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)ds).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
             ctxTargetStrings.SuspendLayout();
@@ -74,6 +75,7 @@
             dgv.TabIndex = 0;
             dgv.CellClick += Dgv_CellClick;
             dgv.CellDoubleClick += Dgv_CellDoubleClick;
+            dgv.CellMouseEnter += Dgv_CellMouseEnter;
             // 
             // dgvcTargetFound
             // 
@@ -194,6 +196,11 @@
             btnGo.UseVisualStyleBackColor = false;
             btnGo.Click += BtnGo_Click;
             // 
+            // timImage
+            // 
+            timImage.Interval = 500;
+            timImage.Tick += TimImage_Tick;
+            // 
             // FrmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -232,5 +239,6 @@
         private DataGridViewTextBoxColumn dgvcComment;
         private DataGridViewCheckBoxColumn targetFoundDataGridViewCheckBoxColumn;
         private DataGridViewButtonColumn dgvcImage;
+        private System.Windows.Forms.Timer timImage;
     }
 }

@@ -133,7 +133,7 @@ namespace RegCheckWeb
                 var page = CurrentWebPage;
                 var filePath = ImageFilePath(page.Id);
                 if (File.Exists(filePath))
-                    ShowImage(page.Id);
+                    CloseImage(page.Id);
                 else
                 {
                     if (Clipboard.ContainsImage() && page != null)
@@ -155,15 +155,30 @@ namespace RegCheckWeb
 
         private static FrmImage? frmImage = null;
 
+        private static bool IsFrmImageAlive
+            //=> !(frmImage == null || frmImage.Disposing || frmImage.IsDisposed);
+            => frmImage != null && !frmImage.Disposing && !frmImage.IsDisposed;
+
+        public static void CloseImage(int pageId)
+        {
+            if (IsFrmImageAlive && frmImage!.Slika == ImageFilePath(pageId))
+                frmImage.Close();
+        }
+
         public static void ShowImage(int pageId)
         {
             try
             {
                 if (frmImage == null || frmImage.Disposing || frmImage.IsDisposed)
                     frmImage = new FrmImage();
+                //if (frmImage.Slika != ImageFilePath(pageId))
+                //{
                 frmImage.Slika = ImageFilePath(pageId);
                 frmImage.Show();
                 frmImage.Activate();
+                //}
+                //else
+                //frmImage.Close();
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
@@ -211,6 +226,35 @@ namespace RegCheckWeb
         private void BtnAppFolderBrowse_Click(object sender, EventArgs e)
         {
             Utils.OpenFile(Directory.GetCurrentDirectory());
+        }
+
+        private void Dgv_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex == -1 || e.ColumnIndex != dgvcImage.Index)
+                return;
+            imageRowIndex = e.RowIndex;
+            timImage.Start();
+        }
+
+        private int imageRowIndex = -1;
+
+        private void TimImage_Tick(object sender, EventArgs e)
+        {
+            timImage.Stop();
+            var pt = dgv.PointToClient(Cursor.Position);
+            var idxRow = (pt.Y - dgv.ColumnHeadersHeight) / dgv.RowTemplate.Height;
+            if (imageRowIndex == idxRow && pt.X > dgv.Width - dgvcImage.Width && pt.X < Width)
+            {
+                var drv = dgv.Rows[idxRow].DataBoundItem as DataRowView;
+                if (drv?.Row is WebPagesRow page)
+                {
+                    var filePath = ImageFilePath(page.Id);
+                    if (File.Exists(filePath))
+                        ShowImage(page.Id);
+                }
+            }
+            else
+                imageRowIndex = -1;
         }
 
         public WebPagesRow? CurrentWebPage
