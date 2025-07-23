@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             ds = new Ds();
             dgv = new DataGridView();
             dgvcTargetFound = new DataGridViewTextBoxColumn();
@@ -42,6 +42,7 @@
             dgvcImage = new DataGridViewButtonColumn();
             bs = new BindingSource(components);
             pnlTop = new Panel();
+            btnMaxiReplaceHash = new Button();
             btnAppFolderBrowse = new Button();
             btnPageOrderUp = new Button();
             btnGo = new Button();
@@ -62,8 +63,8 @@
             // dgv
             // 
             dgv.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
-            dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
+            dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             dgv.AutoGenerateColumns = false;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv.Columns.AddRange(new DataGridViewColumn[] { dgvcTargetFound, dgvcURL, targetStringDataGridViewTextBoxColumn, dgvcComment, targetFoundDataGridViewCheckBoxColumn, dgvcImage });
@@ -149,6 +150,7 @@
             // 
             // pnlTop
             // 
+            pnlTop.Controls.Add(btnMaxiReplaceHash);
             pnlTop.Controls.Add(btnAppFolderBrowse);
             pnlTop.Controls.Add(btnPageOrderUp);
             pnlTop.Controls.Add(btnGo);
@@ -157,6 +159,18 @@
             pnlTop.Name = "pnlTop";
             pnlTop.Size = new Size(1179, 44);
             pnlTop.TabIndex = 1;
+            // 
+            // btnMaxiReplaceHash
+            // 
+            btnMaxiReplaceHash.FlatStyle = FlatStyle.Popup;
+            btnMaxiReplaceHash.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnMaxiReplaceHash.Location = new Point(378, 8);
+            btnMaxiReplaceHash.Name = "btnMaxiReplaceHash";
+            btnMaxiReplaceHash.Size = new Size(143, 28);
+            btnMaxiReplaceHash.TabIndex = 4;
+            btnMaxiReplaceHash.Text = "&Maxi: Replace hash";
+            btnMaxiReplaceHash.UseVisualStyleBackColor = true;
+            btnMaxiReplaceHash.Click += BtnMaxiReplaceHash_Click;
             // 
             // btnAppFolderBrowse
             // 
@@ -240,5 +254,6 @@
         private DataGridViewCheckBoxColumn targetFoundDataGridViewCheckBoxColumn;
         private DataGridViewButtonColumn dgvcImage;
         private System.Windows.Forms.Timer timImage;
+        private Button btnMaxiReplaceHash;
     }
 }

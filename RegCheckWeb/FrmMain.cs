@@ -34,7 +34,7 @@ namespace RegCheckWeb
                 Width = Utils.ReadIntSetting(nameof(Width), Width, it => it > 100 && it <= screen.Width);
                 Height = Utils.ReadIntSetting(nameof(Height), Height, it => it > 100 && it <= screen.Height);
                 Left = Utils.ReadIntSetting(nameof(Left), Left, it => it >= 0 && it < screen.Width);
-                Top = Utils.ReadIntSetting(nameof(Top), Top, it => it >= 0 && it <= screen.Top);
+                Top = Utils.ReadIntSetting(nameof(Top), Top, it => it >= 0 && it <= screen.Height);
 
                 var lastBackup = Utils.ReadDateTimeSetting("lastBackup", DateTime.MinValue);
                 if ((DateTime.Now - lastBackup).TotalDays >= 7)
@@ -85,11 +85,10 @@ namespace RegCheckWeb
             //    , "asdf");
             //await cc.FindTarget();
             //return;
-
+            dgvcTargetFound.Visible = false;
             if (dgv.SelectedRows.Count == 0)
                 dgv.SelectAll();
             var selected = dgv.SelectedRows.Cast<DataGridViewRow>().Reverse();
-
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             foreach (DataGridViewRow row in selected)
             {
@@ -98,16 +97,28 @@ namespace RegCheckWeb
                 bs.Position = row.Index;
                 var page = CurrentWebPage;
                 if (page != null && !page.IsTargetStringNull())
-                {
-                    var chk = new Check(page.URL, page.TargetString);
-                    var found = await chk.FindTarget();
-                    page.IsTargetFound = found.Any();
-                    if (page.TargetString.Contains(Environment.NewLine) && page.IsTargetFound)
+                    try
                     {
-                        page.TargetFound = string.Join(", ", found);
-                        dgvcTargetFound.Visible = true;
+                        var chk = new Check(page.URL, page.TargetString);
+                        var found = await chk.FindTarget();
+                        page.IsTargetFound = found.Any();
+                        if (page.TargetString.Contains(Environment.NewLine) && page.IsTargetFound)
+                        {
+                            page.TargetFound = string.Join(", ", found);
+                            dgvcTargetFound.Visible = true;
+                        }
                     }
-                }
+                    catch (Exception ex)
+                    {
+                        if (ex.Message.Contains("PERSISTED_QUERY_NOT_FOUND"))
+                        {
+                            page.IsTargetFound = false;
+                            page.TargetFound = "PERSISTED_QUERY_NOT_FOUND";
+                            dgvcTargetFound.Visible = true;
+                        }
+                        else
+                            MessageBox.Show(ex.Message);
+                    }
             }
             bs.Position = selected.First().Index;
             dgv.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
@@ -171,14 +182,9 @@ namespace RegCheckWeb
             {
                 if (frmImage == null || frmImage.Disposing || frmImage.IsDisposed)
                     frmImage = new FrmImage();
-                //if (frmImage.Slika != ImageFilePath(pageId))
-                //{
                 frmImage.Slika = ImageFilePath(pageId);
                 frmImage.Show();
                 frmImage.Activate();
-                //}
-                //else
-                //frmImage.Close();
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
@@ -255,6 +261,29 @@ namespace RegCheckWeb
             }
             else
                 imageRowIndex = -1;
+        }
+
+        private void BtnMaxiReplaceHash_Click(object sender, EventArgs e)
+        {
+            // This method replaces the "sha256Hash" part of the URL with the text from the clipboard.
+            // It assumes that the URL contains "sha256Hash" and that the clipboard contains the new hash value.
+            // Get new "sha256Hash": Chrome, DevTools, Network tab, Fetch/XHR, ...operationName=ProductDetails link
+            try
+            {
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    var drv = row.DataBoundItem as DataRowView;
+                    if (!row.IsNewRow && drv?.Row is WebPagesRow page && page.URL.Contains("maxi.rs"))
+                    {
+                        var url = page.URL;
+                        var idx = url.IndexOf("sha256Hash", StringComparison.Ordinal);
+                        if (idx >= 0)
+                            page.URL = url.Substring(0, idx) + "sha256Hash" + Clipboard.GetText();
+                    }
+                }
+                MessageBox.Show("Done.");
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         public WebPagesRow? CurrentWebPage

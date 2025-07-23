@@ -15,6 +15,8 @@
             if (string.IsNullOrEmpty(TargetStrings))
                 return [];
             var html = await WebApi.Get(URL);
+            if (URL.Contains("maxi.rs") && html.Contains("PERSISTED_QUERY_NOT_FOUND"))
+                throw new Exception("PERSISTED_QUERY_NOT_FOUND");
             var hits = new List<string>();
             var targets = TargetStrings.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             foreach (var target in targets)
